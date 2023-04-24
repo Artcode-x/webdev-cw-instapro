@@ -1,11 +1,14 @@
-export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
+import { goToPage } from "../index.js"
+import { renderHeaderComponent } from "./header-component.js"
+import { POSTS_PAGE } from "../routes.js"
+export function renderAddPostPageComponent({ appEl, onAddPostClick, element }) {
   const render = () => {
     // TODO: Реализовать страницу добавления поста
 
     const appHtml = `
     <div class="page-container">
       <div class="header-container"></div>
-
+      
       <div class="page-header">
       <h1 class="logo">instapro</h1>
       <div class="post-header">
@@ -32,46 +35,50 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
 
 
       
-  `;
+  `
 
-    appEl.innerHTML = appHtml;
+    appEl.innerHTML = appHtml
+
+    document.querySelector(".logo").addEventListener("click", () => {
+      goToPage(POSTS_PAGE)
+    })
 
     document.getElementById("add-button").addEventListener("click", () => {
       // <input type="file" id="image-input" />
-      const fileInputElement = document.getElementById("image-input");
-      postImage({ file: fileInputElement.files[0] });
+      const fileInputElement = document.getElementById("image-input")
+      postImage({ file: fileInputElement.files[0] })
 
       function postImage({ file }) {
-        const data = new FormData();
-        data.append("file", file);
+        const data = new FormData()
+        data.append("file", file)
 
         return fetch(baseHost + "/api/upload/image", {
           method: "POST",
           body: data,
         })
           .then((response) => {
-            return response.json();
+            return response.json()
           })
           .then((data) => {
-            console.log(data.fileUrl);
-            const pic = data.fileUrl;
-            console.log(pic);
+            console.log(data.fileUrl)
+            const pic = data.fileUrl
+            console.log(pic)
 
-            const post = document.getElementById("post-input");
-            const postValue = post.value;
-            console.log(postValue);
+            const post = document.getElementById("post-input")
+            const postValue = post.value
+            console.log(postValue)
 
             onAddPostClick({
               // отсюда передаем данные в index.js,  ф-ия callback
               description: postValue,
               imageUrl: pic,
-            });
-          });
+            })
+          })
       }
-    });
-  };
+    })
+  }
 
-  render();
+  render()
 }
 
-import { baseHost } from "../api.js";
+import { baseHost } from "../api.js"
