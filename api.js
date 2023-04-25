@@ -1,6 +1,6 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "Airone93" // Airone93 личный кей
+const personalKey = "prod" // Airone93 личный кей
 export const baseHost = "https://webdev-hw-api.vercel.app"
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`
 
