@@ -69,6 +69,9 @@ export function renderUserPosts({ appEl }) {
        }</strong>
       </p>
       </div>
+      <div class="delPost">
+      <button class="butdelPost"> Удалить </button>
+      </div>
       </div>
       <p class="post-text">
       <span class="user-name">${data.user.name}</span>
