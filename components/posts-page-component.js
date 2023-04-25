@@ -5,7 +5,7 @@ import { posts, goToPage, user, getToken, newGetPosts } from "../index.js"
 import { formatDistanceToNow } from "date-fns"
 import { el, ru } from "date-fns/locale"
 
-import { addLike, delLike, getPosts } from "../api.js"
+import { addLike, delLike, getPosts, deletePost } from "../api.js"
 
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
@@ -34,6 +34,7 @@ export function renderPostsPageComponent({ appEl }) {
                       <img class="post-image" src="${elementsOfdata.imageUrl}">
                     </div>
                     <div class="post-likes">
+                    <div class="withButtonDel">
                       <button data-post-id="${
                         elementsOfdata.id
                       }" class="like-button">
@@ -62,7 +63,12 @@ export function renderPostsPageComponent({ appEl }) {
                             : "0"
                         } </strong>
                       </p>
+                      </div>
+                      <div class="delPost">
+                      <button class="butdelPost"> Удалить </button>
+                      </div>
                     </div>
+                 
                     <p class="post-text">
                       <span class="user-name">${elementsOfdata.user.name}</span>
                       ${elementsOfdata.description}
@@ -89,6 +95,31 @@ export function renderPostsPageComponent({ appEl }) {
    */
   appEl.innerHTML = appHtml
 
+  //  ф-ия удаления постов
+  function deletePosts() {
+    const buttonDelElements = document.querySelectorAll(".delPost")
+
+    for (let buttonDelElement of buttonDelElements) {
+      buttonDelElement.addEventListener("click", (event) => {
+        event.stopPropagation()
+
+        const index = buttonDelElement.closest(".post").dataset.index // находим index - номер конкретного поста(как в массиве)
+        const id = posts[index].id // обращение ко всем постам, номеру конкретного поста, его id // id posta
+        console.log(id) // чекаем выводится ли нужный id
+        deletePost({ token: getToken(), id }) // вызываем ф-ию удаления из api
+          .then(() => {
+            return getPosts({ token: getToken(), id }) // вызываем ф-ию получения всех постов с api, передаем token и id в нее
+          })
+          .then((response) => {
+            newGetPosts(response) // перезаписываем newGetPosts (ф-ия нах-ся в index.js) после нажатия кнопки удалить
+            // после вызова newGetPosts - отобразится список оставшихся постов после удаления (обновится)
+            return renderPostsPageComponent({ appEl, posts }) // ререндер страницы постов
+          })
+      })
+    }
+  }
+  deletePosts()
+
   function liveLikes() {
     const buttonLikeElements = document.querySelectorAll(".like-button")
     for (let buttonLikeElement of buttonLikeElements) {
@@ -112,8 +143,8 @@ export function renderPostsPageComponent({ appEl }) {
               return getPosts({ token: getToken(), id })
             })
             .then((response) => {
-              newGetPosts(response) // перезаписываем newGetUserPosts после нажатия лайка
-              return renderPostsPageComponent({ appEl, posts }) // ререндер страницы конкретного юзера
+              newGetPosts(response) // перезаписываем newGetPosts после нажатия лайка
+              return renderPostsPageComponent({ appEl, posts }) // ререндер страницы постов
             })
         } else if (user && posts[index].isLiked === true) {
           delLike({
@@ -125,6 +156,7 @@ export function renderPostsPageComponent({ appEl }) {
             })
             .then((response) => {
               newGetPosts(response)
+              console.log(response)
               return renderPostsPageComponent({ appEl, posts })
             })
         }

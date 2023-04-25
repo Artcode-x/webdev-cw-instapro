@@ -41,6 +41,7 @@ export function renderUserPosts({ appEl }) {
       <img class="post-image" src="${data.imageUrl}">
       </div>
       <div class="post-likes">
+      <div class="withButtonDel">
       <button data-post-id="${data.id}" class="like-button">
       ${
         data.isLiked
@@ -68,7 +69,7 @@ export function renderUserPosts({ appEl }) {
        }</strong>
       </p>
       </div>
-      
+      </div>
       <p class="post-text">
       <span class="user-name">${data.user.name}</span>
       ${data.description}
