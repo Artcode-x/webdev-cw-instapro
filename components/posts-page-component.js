@@ -68,7 +68,7 @@ export function renderPostsPageComponent({ appEl }) {
                       <button class="butdelPost"> Удалить </button>
                       </div>
                     </div>
-                 
+                 <div>
                     <p class="post-text">
                       <span class="user-name">${elementsOfdata.user.name}</span>
                       ${elementsOfdata.description}
@@ -82,7 +82,7 @@ export function renderPostsPageComponent({ appEl }) {
                         }
                       )}
                     </p>
-       
+                        </div>
                     </li>
                 </ul>
               </div>`

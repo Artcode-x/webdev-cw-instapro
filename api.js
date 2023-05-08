@@ -159,6 +159,7 @@ export function delLike({ token, postID }) {
 }
 
 export function sendRequestToApi({ description, imageUrl, token }) {
+  // Добавление нового поста
   console.log({ description, imageUrl, token })
   return fetch(postsHost, {
     method: "POST",
