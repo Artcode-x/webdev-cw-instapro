@@ -24,6 +24,7 @@ export let userPosts = []
 
 export const getToken = () => {
   const token = user ? `Bearer ${user.token}` : undefined
+  console.log(token)
   return token
 }
 

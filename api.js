@@ -1,6 +1,6 @@
 // Замени на свой, чтобы получить независимый от других набор данных.
 // "боевая" версия инстапро лежит в ключе prod
-const personalKey = "prod"
+const personalKey = "prod" // Airone93 личный кей
 export const baseHost = "https://webdev-hw-api.vercel.app"
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`
 
@@ -48,15 +48,44 @@ export function getAllPostsUser({ token, id }) {
     }
   )
     .then((response) => {
-      console.log({ id })
-      console.log(response)
+      //   console.log({ id })
+      //  console.log(response)
       return response.json()
     })
     .then((data) => {
-      console.log(data.posts)
+      //   console.log(data.posts)
       return data.posts
     })
 }
+
+export function deletePost({ token, id }) {
+  console.log(id)
+  return fetch(postsHost + `/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: token,
+    },
+  }).then((response) => {
+    console.log(response)
+    return response.json()
+  })
+  // .then((data) => {
+  //   return data.posts
+  // })
+}
+
+// export function deleteUserPost({ token, id }) {
+//   console.log(id)
+//   return fetch(postsHost + `/user-posts/${id}`, {
+//     method: "DELETE",
+//     headers: {
+//       Authorization: token,
+//     },
+//   }).then((response) => {
+//     console.log(response)
+//     return response.json()
+//   })
+// }
 
 // https://github.com/GlebkaF/webdev-hw-api/blob/main/pages/api/user/README.md#%D0%B0%D0%B2%D1%82%D0%BE%D1%80%D0%B8%D0%B7%D0%BE%D0%B2%D0%B0%D1%82%D1%8C%D1%81%D1%8F
 // Функция регистрации нового пользователя
@@ -130,6 +159,7 @@ export function delLike({ token, postID }) {
 }
 
 export function sendRequestToApi({ description, imageUrl, token }) {
+  // Добавление нового поста
   console.log({ description, imageUrl, token })
   return fetch(postsHost, {
     method: "POST",
